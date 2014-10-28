@@ -1,0 +1,24 @@
+{
+    "name": "theahindle/mysipisonfire",
+    "type": "library",
+    "description": "Slightly modified version of http://code.google.com/p/php-sip/",
+    "keywords": ["sip", "voip"],
+    "homepage": "http://github.com/theahindle/MySipIsOnFire",
+    "license": "GPLV2",
+    "authors": [
+        {
+            "name": "Ashley Hindle",
+            "email": "ashley@smellynose.com",
+            "homepage": "http://smellynose.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "MySipIsOnFire": "src"
+        }
+    }
+}
