@@ -1,4 +1,5 @@
 <?php
+namespace MySipIsOnFire;
 /**
  * (c) 2007-2009 Chris Maciejewski
  * 
@@ -31,7 +32,7 @@
  * 
  * @version    SVN: $Id: PhpSIP.class.php 22 2009-10-21 14:16:31Z chris.maciejewski $
  */
-class PhpSIPException extends Exception
+class SipException extends Exception
 {
   public function __construct($message, $code = 0)
   {
