@@ -34,7 +34,6 @@ use MySipIsOnFire\SipException;
  * 
  * @version    SVN: $Id: PhpSIP.class.php 24 2009-11-25 11:39:57Z level7systems $
  */
-require_once 'PhpSIP.Exception.php';
 
 class Sip
 {
