@@ -806,13 +806,14 @@ class Sip
         $this->dialog = true;
       }
       
-      return $this->parseResponse();
+      $this->parseResponse();
     }
     // Request
     else
     {
-      return $this->parseRequest();
+      $this->parseRequest();
     }
+      return $temp[0];
   }
   
   /**
