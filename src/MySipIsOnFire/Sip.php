@@ -372,7 +372,7 @@ class Sip
             break;
           }
           
-          $prev = $port;
+          $prev = $port + $this->min_port;
         }
         
         if (($prev + 1) < $this->min_port)
