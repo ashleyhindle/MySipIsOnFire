@@ -333,6 +333,11 @@ class Sip
       $pids = false;
     }
     
+
+    if ($this->debug) {
+            var_dump($pids);
+    }
+
     ftruncate($fp, 0);
     
     // we are the first one to run, initialize "PID" => "port number" array
@@ -349,10 +354,6 @@ class Sip
     else
     {
       // check if there are any empty ports left
-      if (count($pids) >= ($this->max_port - $this->min_port))
-      {
-        throw new SipException("No more ports left to bind.");
-      }
       
       asort($pids,SORT_NUMERIC);
       
@@ -364,31 +365,10 @@ class Sip
       }
       else
       {
-        foreach ($pids as $port)
-        {
-          if (($port - $prev) > 1)
-          {
-            $src_port = $prev + 1;
-            break;
-          }
-          
-          $prev = $port + $this->min_port;
-        }
-        
-        if (($prev + 1) < $this->min_port)
-        {
-          throw new SipException("Tried to +1 last port used, it's less than min_port! We shouldn't be here!");
-        }
-
-        if (($prev + 1) >= $this->max_port)
-        {
-          throw new SipException("No more ports left to bind. We shouldn't be here!");
-        }
-        
-        $src_port = $prev + 1;
+        $src_port = max($pids) + 1;
       }
       
-      if (in_array($src_port,$pids))
+      if (in_array($src_port, $pids))
       {
         throw new SipException("Fail to obtain free port number.");
       }
