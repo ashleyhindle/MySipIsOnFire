@@ -42,12 +42,12 @@ class Sip
   /**
    * Min port
    */
-  private $min_port = 5065;
+  private $min_port = 50065;
   
   /**
    * Max port
    */
-  private $max_port = 5265;
+  private $max_port = 52065;
   
   /**
    * Final Response timer (in seconds)
