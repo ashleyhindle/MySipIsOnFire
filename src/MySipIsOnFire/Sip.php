@@ -1278,9 +1278,11 @@ class Sip
    *
    * @return bool True on success
    */
-  private function createSocket()
-  { 
-    $this->getPort();
+  private function createSocket($skipGetPort=false)
+  {
+    if(!$skipGetPort) {
+        $this->getPort();
+    }
     
     if (!$this->src_ip)
     {
@@ -1296,7 +1298,13 @@ class Sip
     if (!@socket_bind($this->socket, $this->src_ip, $this->src_port))
     {
       $err_no = socket_last_error($this->socket);
-      throw new SipException ("Failed to bind ".$this->src_ip.":".$this->src_port." ".socket_strerror($err_no));
+      if ($this->debug) {
+              echo "Failed to bind {$this->src_ip}:{$this->src_port}, so going to increase the port, and try again";
+      }
+      $this->src_port++;
+      return $this->createSocket(true);
+      //throw new SipException ("Failed to bind ".$this->src_ip.":".$this->src_port." ".socket_strerror($err_no));
+
     }
     
     if (!@socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, array("sec"=>$this->fr_timer,"usec"=>0)))
