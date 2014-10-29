@@ -771,7 +771,7 @@ class Sip
   /**
    * Reads response
    */
-  private function readResponse()
+  public function readResponse()
   {
     $from = "";
     $port = 0;
