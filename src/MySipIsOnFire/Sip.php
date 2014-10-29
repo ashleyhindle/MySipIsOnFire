@@ -375,6 +375,11 @@ class Sip
           $prev = $port;
         }
         
+        if (($prev + 1) < $this->min_port)
+        {
+          throw new SipException("Tried to +1 last port used, it's less than min_port! We shouldn't be here!");
+        }
+
         if (($prev + 1) >= $this->max_port)
         {
           throw new SipException("No more ports left to bind. We shouldn't be here!");
