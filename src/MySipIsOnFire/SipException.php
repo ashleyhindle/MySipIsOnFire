@@ -32,7 +32,7 @@ namespace MySipIsOnFire;
  * 
  * @version    SVN: $Id: PhpSIP.class.php 22 2009-10-21 14:16:31Z chris.maciejewski $
  */
-class SipException extends Exception
+class SipException extends \Exception
 {
   public function __construct($message, $code = 0)
   {
