@@ -52,7 +52,7 @@ class Sip
   /**
    * Final Response timer (in seconds)
    */
-  private $fr_timer = 7;
+  private $fr_timer = 12;
   
   /**
    * Lock file
