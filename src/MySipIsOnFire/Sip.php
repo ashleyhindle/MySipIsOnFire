@@ -251,8 +251,7 @@ class Sip
       }
     }
     
-    $this->src_ip = $src_ip;
-    
+
     $this->lock_file = rtrim(sys_get_temp_dir(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'phpSIP.lock';
     
     $this->createSocket();
@@ -296,98 +295,7 @@ class Sip
       throw new SipException ("Min port is bigger than max port.");
     }
     
-    // waiting until file will be locked for writing 
-    // (1000 milliseconds as timeout)
-    $fp = @fopen($this->lock_file, 'a+b');
-    
-    if (!$fp)
-    {
-      throw new SipException ("Failed to open lock file ".$this->lock_file);
-    }
-    
-    $startTime = microtime();
-    
-    do
-    {
-      $canWrite = flock($fp, LOCK_EX);
-      // If lock not obtained sleep for 0 - 100 milliseconds,
-      // to avoid collision and CPU load
-      if(!$canWrite) usleep(round(rand(0, 100)*1000));
-      
-    } while ((!$canWrite)and((microtime()-$startTime) < 1000));
-    
-    if (!$canWrite)
-    {
-      throw new SipException ("Failed to lock a file in 1000 ms.");
-    }
-    
-    //file was locked
-    $size = filesize($this->lock_file);
-    if ($size)
-    {
-      $contents = fread($fp, $size);
-      $pids = explode(",",$contents);
-    }
-    else
-    {
-      $pids = false;
-    }
-    
-
-    if ($this->debug) {
-            var_dump($pids);
-    }
-
-    ftruncate($fp, 0);
-    
-    // we are the first one to run, initialize "PID" => "port number" array
-    if (!$pids)
-    {
-      if (!fwrite($fp, $this->min_port))
-      {
-        throw new SipException("Fail to write data to a lock file.");
-      }
-      
-      $this->src_port =  $this->min_port;
-    }
-    // there are other programs running now
-    else
-    {
-      // check if there are any empty ports left
-      
-      asort($pids,SORT_NUMERIC);
-      
-      $prev = current($pids);
-      
-      if ($prev > $this->min_port)
-      {
-        $src_port = $this->min_port;
-      }
-      else
-      {
-        $src_port = max($pids) + 1;
-      }
-      
-      if (in_array($src_port, $pids))
-      {
-        throw new SipException("Fail to obtain free port number.");
-      }
-      
-      $pids[] = $src_port;
-      
-      if (!fwrite($fp, implode(",",$pids)))
-      {
-        throw new SipException("Failed to write data to lock file.");
-      }
-      
-      $this->src_port = $src_port;
-    }
-    
-    if (!fclose($fp))
-    {
-      throw new SipException("Failed to close lock_file");
-    }
-    
+    $this->src_port = rand($this->min_port, $this->max_port);
   }
   
   /**
