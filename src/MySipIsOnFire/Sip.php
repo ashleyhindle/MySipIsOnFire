@@ -251,6 +251,7 @@ class Sip
       }
     }
     
+    $this->src_ip = $src_ip;
 
     $this->lock_file = rtrim(sys_get_temp_dir(),DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'phpSIP.lock';
     
