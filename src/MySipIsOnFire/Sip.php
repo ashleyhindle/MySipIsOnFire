@@ -304,69 +304,7 @@ class Sip
    */
   private function releasePort()
   {
-    // waiting until file will be locked for writing 
-    // (1000 milliseconds as timeout)
-    $fp = fopen($this->lock_file, 'r+b');
-    
-    if (!$fp)
-    {
-      throw new SipException("Can't open lock file.");
-    }
-    
-    $startTime = microtime();
-    
-    do
-    {
-      $canWrite = flock($fp, LOCK_EX);
-      // If lock not obtained sleep for 0 - 100 milliseconds,
-      // to avoid collision and CPU load
-      if(!$canWrite) usleep(round(rand(0, 100)*1000));
-      
-    } while ((!$canWrite)and((microtime()-$startTime) < 1000));
-    
-    if (!$canWrite)
-    {
-      throw new SipException("Failed to lock a file in 1000 ms.");
-    }
-    
-    clearstatcache();
-    
-    $size = filesize($this->lock_file);
-    $content = fread($fp,$size);
-    
-    //file was locked
-    $pids = explode(",",$content);
-    
-    $key = array_search($this->src_port,$pids);
-    
-    unset($pids[$key]);
-    
-    if (count($pids) === 0)
-    {
-      if (!fclose($fp))
-      {
-        throw new SipException("Failed to close lock_file");
-      }
-      
-      if (!unlink($this->lock_file))
-      {
-        throw new SipException("Failed to delete lock_file.");
-      }
-    }
-    else
-    {
-      ftruncate($fp, 0);
-      
-      if (!fwrite($fp, implode(",",$pids)))
-      {
-        throw new SipException("Failed to save data in lock_file");
-      }
-      
-      if (!fclose($fp))
-      {
-        throw new SipException("Failed to close lock_file");
-      }
-    }
+			 return true;
   }
   
   /**
